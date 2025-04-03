@@ -12,11 +12,13 @@ mutable struct LList
     size::Int
 end
 
+# Instantiate the LList with no data
 LList() = LList(nothing, 0)
 
 function Base.push!(lst::LList, data)
     curr = lst.head
 
+    # Case when the LList is empty
     if isnothing(curr)
         curr = Node(data, nothing)
         lst.head = curr
@@ -54,6 +56,7 @@ function Base.setindex!(lst::LList, value, key)
     curr = lst.head
     idx = 1
 
+    # Walk down the list until we reach the correct index
     while idx < key
         curr = curr.next
         idx += 1
