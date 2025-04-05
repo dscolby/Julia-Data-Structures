@@ -8,32 +8,24 @@ end
 
 mutable struct Queue
     head::Union{QNode, Nothing}
+    tail::Union{QNode, Nothing}
     size::Int
 end
 
-Queue() = Queue(nothing, 0)
+Queue() = Queue(nothing, nothing, 0)
 
-enqueue!(q::Queue, item) = _enqueue!(q, q.head, item)
+function enqueue!(q::Queue, item)
+    new_node = QNode(item, nothing)
 
-# We could also use iteration instead of recursion but this is an educational exercise, 
-# so it is good to practice recursion
-function _enqueue!(q::Queue, curr::Union{QNode, Nothing}, item)
-    # Base case when no items have been added yet
-    if isnothing(curr)
-        q.head = QNode(item, nothing)
-        q.size += 1
-        return
+    if isnothing(q.head)
+        q.head = new_node
+        q.tail = new_node
+    else
+        q.tail.next = new_node  # Add new nodes to the tail
+        q.tail = new_node
     end
 
-    # Next base case when curr is the last node in the queue
-    if isnothing(curr.next)
-        curr.next = QNode(item, nothing)
-        q.size += 1
-        return
-    end
-
-    # Call enqueue again with the next node
-    _enqueue!(q, curr.next, item)
+    q.size += 1
 end
 
 function dequeue!(q::Queue)
@@ -41,11 +33,16 @@ function dequeue!(q::Queue)
         return nothing
     end
 
-    curr = q.head
-    q.head = curr.next
+    popped_node = q.head  # Pop nodes from the head
+    q.head = popped_node.next
+
+    if isnothing(q.head)
+        q.tail = nothing
+    end
+
     q.size -= 1
 
-    return curr.data
+    return popped_node.data
 end
 
 Base.size(q::Queue) = q.size
