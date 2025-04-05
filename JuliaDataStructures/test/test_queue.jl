@@ -1,7 +1,7 @@
 using Test
 using JuliaDataStructures
 
-@testset "Enqueing and Dequing" begin
+@testset "Enqueing and Dequeing" begin
     q = Queue()
     @test isnothing(dequeue(q))
 
