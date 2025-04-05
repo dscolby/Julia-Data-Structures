@@ -70,8 +70,8 @@ end
 
 function bubble_down_max!(heap::Heap, idx::Int, n::Int)
     largest = idx
-    left = 2 * idx
-    right = 2 * idx + 1
+    left = 2idx
+    right = 2idx + 1
 
     if left <= n && heap.array[left] > heap.array[largest]
         largest = left
@@ -87,8 +87,8 @@ end
 
 function bubble_down_min!(heap::Heap, idx::Int, n::Int)
     smallest = idx
-    left = 2 * idx
-    right = 2 * idx + 1
+    left = 2idx
+    right = 2idx + 1
 
     if left <= n && heap.array[left] < heap.array[smallest]
         smallest = left
