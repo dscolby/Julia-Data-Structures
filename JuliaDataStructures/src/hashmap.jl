@@ -26,16 +26,6 @@ function HashMap{K, V}(
     HashMap{K, V}(size, capacity, growth_factor, table, 0)
 end
 
-function _hash(key::Tuple{Vararg{<:Real}}, size::Int)
-    hash_val = 0
-
-    for num in key 
-        hash_val += num
-    end
-
-    return _hash(hash_val, size)
-end
-
 Base.setindex!(hashmap::HashMap, value, key) = _insert!(hashmap, value, key)
 
 function Base.getindex(hashmap::HashMap, key)
@@ -92,6 +82,16 @@ function _rehash(hashmap::HashMap{K, V}) where {K, V}
             curr = curr.next
         end
     end
+end
+
+function _hash(key::Tuple{Vararg{<:Real}}, size::Int)
+    hash_val = 0
+
+    for num in key 
+        hash_val += num
+    end
+
+    return _hash(hash_val, size)
 end
 
 function _hash(key::Tuple{Vararg{String}}, size::Int)
